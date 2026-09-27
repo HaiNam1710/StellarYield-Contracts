@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   getVaultEpochs,
   getEpochDetail,
+  getEpochYieldPerShare,
   getBulkEpochs,
   getUserPendingYield,
   getYieldSummary,
@@ -70,6 +71,18 @@ yieldsRouter.get(
   validateParams(epochDetailParamsSchema),
   getEpochDetail,
 );
+
+const epochYieldPerShareParamsSchema = z.object({
+  contractId: z.string(),
+  epochId: z.coerce.number().int().positive(),
+});
+
+yieldsRouter.get(
+  "/:contractId/epochs/:epochId/yield-per-share",
+  validateParams(epochYieldPerShareParamsSchema),
+  getEpochYieldPerShare,
+);
+
 
 // ── Epoch comparison (#820) ──────────────────────────────────────────────────
 const epochCompareQuerySchema = z.object({
